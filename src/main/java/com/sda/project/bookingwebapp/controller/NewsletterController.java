@@ -17,7 +17,7 @@ public class NewsletterController {
 
     @GetMapping("/newsletter")
     public ModelAndView indexPage() {
-        return new ModelAndView("index")
+        return new ModelAndView("index-old")
                 .addObject("newsletter", new NewsletterModel())
                 .addObject("user", "Aleks");
     }
