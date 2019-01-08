@@ -36,5 +36,9 @@ public class AddressEntity {
     @ManyToOne(targetEntity = PropertyEntity.class)
     @JoinColumn(name = "propertyId", referencedColumnName = "propertyId")
     private PropertyEntity property;
+
+    @OneToOne(targetEntity = RoomEntity.class)
+    @JoinColumn(name = "roomId", referencedColumnName = "roomId")
+    protected RoomEntity room;
 }
 

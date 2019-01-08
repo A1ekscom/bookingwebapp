@@ -30,12 +30,13 @@ public class IndexController {
 
     @GetMapping("/search")
     public ModelAndView searchProperty(@ModelAttribute SearchPropertyModel searchPropertyModel) {
-        return new ModelAndView("result");
+        return new ModelAndView("result")
+                .addObject("searchPropertyModel", new SearchPropertyModel());
     }
 
-    // not used at the moment - change with anything proper
-    @GetMapping("/search/{city}")
-    public ModelAndView searchPropertyByCity(@PathVariable("city") String city) {
-        return new ModelAndView("result");
-    }
+//    // not used at the moment - change with anything proper
+//    @GetMapping("/search/{city}")
+//    public ModelAndView searchPropertyByCity(@PathVariable("city") String city) {
+//        return new ModelAndView("result");
+//    }
 }

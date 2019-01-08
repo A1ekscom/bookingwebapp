@@ -47,4 +47,8 @@ public class PropertyEntity {
     @OneToMany(targetEntity = AddressEntity.class, mappedBy = "property", cascade = CascadeType.ALL)
     private List<AddressEntity> addresses;
 
+    @BatchSize(size = 10)
+    @OneToMany(targetEntity = RoomEntity.class, mappedBy = "property", cascade = CascadeType.ALL)
+    private List<RoomEntity> rooms;
+
 }
