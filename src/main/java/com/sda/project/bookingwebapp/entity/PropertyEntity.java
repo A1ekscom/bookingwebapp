@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -40,12 +41,14 @@ public class PropertyEntity {
     @Column(unique = true, nullable = false)
     private String propertyName;
 
+    @Column
+    private String amenities;
+
+    @Column(length = 2048)
+    private String propertyDescription;
+
     @Column(precision = 10, scale = 2)
     private BigDecimal startsFrom;
-
-    @BatchSize(size = 10)
-    @OneToMany(targetEntity = AddressEntity.class, mappedBy = "property", cascade = CascadeType.ALL)
-    private List<AddressEntity> addresses;
 
     @BatchSize(size = 10)
     @OneToMany(targetEntity = RoomEntity.class, mappedBy = "property", cascade = CascadeType.ALL)

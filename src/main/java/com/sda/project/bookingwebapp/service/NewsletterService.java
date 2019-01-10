@@ -1,6 +1,6 @@
 package com.sda.project.bookingwebapp.service;
 
-import com.sda.project.bookingwebapp.converter.NewsletterEntityToModelConverter;
+import com.sda.project.bookingwebapp.converter.SimpleEntityToModelConverter;
 import com.sda.project.bookingwebapp.entity.NewsletterEntity;
 import com.sda.project.bookingwebapp.model.NewsletterModel;
 import com.sda.project.bookingwebapp.repository.NewsletterRepository;
@@ -19,7 +19,7 @@ public class NewsletterService {
     private NewsletterRepository newsletterRepository;
 
     @Autowired
-    private NewsletterEntityToModelConverter newsletterEntityToModelConverter;
+    private SimpleEntityToModelConverter simpleEntityToModelConverter;
 
     public void insertNewsletter(final String email) {
         Optional<NewsletterEntity> newsletterEntity = newsletterRepository.findByEmail(email);
@@ -30,7 +30,7 @@ public class NewsletterService {
 
     public List<NewsletterModel> getAllNewsletters() {
         List<NewsletterEntity> newsletterEntities = newsletterRepository.findAll();
-        List<NewsletterModel> newsletterModels = newsletterEntities.stream().map(newsletterEntityToModelConverter::toModel).collect(Collectors.toList());
+        List<NewsletterModel> newsletterModels = newsletterEntities.stream().map(simpleEntityToModelConverter::newsletterEntityToModel).collect(Collectors.toList());
         return newsletterModels;
     }
 
@@ -41,7 +41,7 @@ public class NewsletterService {
 
     private NewsletterModel tryGetNewsletterModel(Optional<NewsletterEntity> newsletterEntity) {
         try {
-            NewsletterModel newsletterModel = newsletterEntity.map(newsletterEntityToModelConverter::toModel).get();
+            NewsletterModel newsletterModel = newsletterEntity.map(simpleEntityToModelConverter::newsletterEntityToModel).get();
             return newsletterModel;
         } catch (NoSuchElementException e) {
             throw new RuntimeException("No such element found");
