@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories
 @EnableJpaAuditing
 @SpringBootApplication
-public class BookingwebappApplication {
+public class BookingWebappApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BookingwebappApplication.class, args);
+        SpringApplication.run(BookingWebappApplication.class, args);
     }
 
 }

@@ -1,12 +1,8 @@
 package com.sda.project.bookingwebapp.converter;
 
-import com.sda.project.bookingwebapp.entity.AddressEntity;
-import com.sda.project.bookingwebapp.entity.NewsletterEntity;
-import com.sda.project.bookingwebapp.entity.PropertyEntity;
-import com.sda.project.bookingwebapp.entity.RoomEntity;
-import com.sda.project.bookingwebapp.model.AddressModel;
-import com.sda.project.bookingwebapp.model.NewsletterModel;
-import com.sda.project.bookingwebapp.model.PropertyModel;
+import com.sda.project.bookingwebapp.entity.*;
+import com.sda.project.bookingwebapp.model.*;
+import com.sda.project.bookingwebapp.utility.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -49,6 +45,59 @@ public class SimpleEntityToModelConverter {
         return propertyModels;
     }
 
+    public PropertyModel propertyEntityToModel(final PropertyEntity propertyEntity, final Long addressId) {
+
+        PropertyModel propertyModel = new PropertyModel();
+
+        if (propertyEntity.getAmenities() != null) {
+            List<String> amenities = StringUtils.splitStingByComma(propertyEntity.getAmenities());
+            propertyModel.setAmenities(amenities);
+        }
+
+        List<MediaModel> mediaModels = new ArrayList<>();
+        for (MediaEntity mediaEntity : propertyEntity.getMediaLinks()) {
+            MediaModel mediaModel = new MediaModel();
+            mediaModel.setMediaId(mediaEntity.getMediaId());
+            mediaModels.add(mediaModel);
+        }
+        propertyModel.setMediaLinks(mediaModels);
+        propertyModel.setPropertyId(propertyEntity.getPropertyId());
+        propertyModel.setResultPageImageUrl(propertyEntity.getResultPageImageUrl());
+        propertyModel.setPropertyDescription(propertyEntity.getPropertyDescription());
+        propertyModel.setStartsFrom(propertyEntity.getStartsFrom());
+
+        List<RoomModel> roomModels = getRoomModels(propertyEntity, addressId);
+        propertyModel.setRooms(roomModels);
+
+        return propertyModel;
+    }
+
+    private List<RoomModel> getRoomModels(PropertyEntity propertyEntity, Long addressId) {
+        List<RoomModel> roomModels = new ArrayList<>();
+        List<AddressModel> addressModels = new ArrayList<>();
+        for (RoomEntity roomEntity : propertyEntity.getRooms()) {
+            if (roomEntity.getAddress().getAddressId() == addressId) {
+                RoomModel roomModel = new RoomModel();
+                roomModel.setRoomId(roomEntity.getRoomId());
+                roomModel.setRoomName(roomEntity.getRoomName());
+                roomModel.setIncludes(roomEntity.getIncludes());
+                roomModel.setMaximumPerson(roomEntity.getMaximumPerson());
+                roomModel.setPricePerNight(roomEntity.getPricePerNight());
+                roomModels.add(roomModel);
+
+                if (addressModels.isEmpty()) {
+                    AddressModel addressModel = new AddressModel();
+                    addressModel.setAddressId(roomEntity.getAddress().getAddressId());
+                    addressModel.setCity(roomEntity.getAddress().getCity());
+                    addressModel.setCountry(roomEntity.getAddress().getCountry());
+                    addressModel.setPostalCode(roomEntity.getAddress().getPostalCode());
+                    addressModels.add(addressModel);
+                }
+            }
+        }
+        return roomModels;
+    }
+
     public List<PropertyModel> addressEntitiesToPropertyModels(final List<AddressEntity> addressEntities) {
         List<PropertyModel> propertyModels = new ArrayList<>();
         for (AddressEntity addressEntity : addressEntities) {
@@ -56,6 +105,12 @@ public class SimpleEntityToModelConverter {
             propertyModel.setPropertyId(addressEntity.getRoom().getProperty().getPropertyId());
             propertyModel.setPropertyName(addressEntity.getRoom().getProperty().getPropertyName());
             propertyModel.setStartsFrom(addressEntity.getRoom().getProperty().getStartsFrom());
+            propertyModel.setPropertyDescription(addressEntity.getRoom().getProperty().getPropertyDescription());
+
+            if (addressEntity.getRoom().getProperty().getAmenities() != null) {
+                List<String> amenities = StringUtils.splitStingByComma(addressEntity.getRoom().getProperty().getAmenities());
+                propertyModel.setAmenities(amenities);
+            }
 
             AddressModel addressModel = new AddressModel();
             addressModel.setAddressId(addressEntity.getAddressId());
@@ -63,6 +118,7 @@ public class SimpleEntityToModelConverter {
             addressModel.setCountry(addressEntity.getCountry());
             addressModel.setPostalCode(addressEntity.getPostalCode());
             addressModel.setStreet(addressEntity.getStreet());
+
             propertyModel.getAddresses().add(addressModel);
 
             propertyModels.add(propertyModel);
