@@ -19,7 +19,7 @@ public class ResultController {
     public ModelAndView searchPropertyById(@PathVariable("propertyId") Long propertyId,
                                            @PathVariable("addressId") Long addressId) {
 
-        PropertyModel propertyModel = propertyService.getPropertyByIdAndAdressId(propertyId, addressId);
+        PropertyModel propertyModel = propertyService.getPropertyByIdAndAddressId(propertyId, addressId);
 
         return new ModelAndView("property-detail")
                 .addObject("searchPropertyModel", new SearchPropertyModel())

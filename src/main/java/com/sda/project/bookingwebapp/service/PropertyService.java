@@ -30,7 +30,7 @@ public class PropertyService {
     @Autowired
     private CustomPropertyRepository customPropertyRepository;
 
-    public PropertyModel getPropertyByIdAndAdressId(final Long propertyId, final Long addressId) {
+    public PropertyModel getPropertyByIdAndAddressId(final Long propertyId, final Long addressId) {
         Optional<PropertyEntity> propertyEntity = propertyRepository.findById(propertyId);
 
         if (propertyEntity.isPresent()) {

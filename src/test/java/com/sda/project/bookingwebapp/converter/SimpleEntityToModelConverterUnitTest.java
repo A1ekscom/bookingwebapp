@@ -2,6 +2,7 @@ package com.sda.project.bookingwebapp.converter;
 
 
 import com.sda.project.bookingwebapp.entity.NewsletterEntity;
+import com.sda.project.bookingwebapp.entity.PropertyEntity;
 import com.sda.project.bookingwebapp.model.NewsletterModel;
 import org.junit.After;
 import org.junit.Assert;
@@ -31,4 +32,9 @@ public class SimpleEntityToModelConverterUnitTest {
         Assert.assertEquals(1L, actualNewsletterModel.getId());
     }
 
+    // todo Create unit test for propertyEntityToModel()
+    @Test
+    public void shouldConvertPropertyEntityToPropertyModel() {
+        PropertyEntity actualPropertyEntity = new PropertyEntity();
+    }
 }
